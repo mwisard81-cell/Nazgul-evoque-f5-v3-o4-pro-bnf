@@ -1,37 +1,38 @@
-# To-Do List App
+# Checklist de configuration Betaflight pour drone FPV
 
-A simple front-end to-do list application that runs entirely in the browser.
+Une application front-end légère qui sert de checklist de configuration pour un drone FPV sous Betaflight et fonctionne entièrement dans le navigateur.
 
-## Features
+## Fonctionnalités
 
-- Add a new to-do item
-- Mark items as complete/incomplete
-- Delete items
-- Persist items in `localStorage`
-- Restore saved items automatically on page load
+- Checklist Betaflight préremplie avec les étapes essentielles
+- Ajout d’étapes personnalisées selon votre montage
+- Validation/invalidation des étapes terminées
+- Suppression d’une étape
+- Sauvegarde locale via `localStorage`
+- Restauration automatique au rechargement
 
-## Run the app
+## Lancer l’application
 
-No backend is required.
+Aucun backend n’est nécessaire.
 
-### Option 1: Open directly
+### Option 1 : ouverture directe
 
-Open `index.html` from the repository root in your browser.
+Ouvrez `index.html` depuis la racine du dépôt dans votre navigateur.
 
-### Option 2: Run a local static server
+### Option 2 : serveur statique local
 
-From the repository root:
+Depuis la racine du dépôt :
 
 ```bash
 python3 -m http.server 8000
 ```
 
-Then open `http://localhost:8000`.
+Puis ouvrez `http://localhost:8000`.
 
-## Usage
+## Utilisation
 
-1. Enter a task in the input field and click **Add**.
-2. Use the checkbox to mark a task complete/incomplete.
-3. Click **Delete** to remove a task.
-4. Refresh the page — your list remains saved via `localStorage` when browser storage writes are available.
-5. If `localStorage` is blocked/unavailable, updates may not persist after refresh.
+1. Passez en revue les étapes de base déjà proposées pour Betaflight.
+2. Ajoutez une étape personnalisée si votre build nécessite un réglage supplémentaire.
+3. Cochez chaque étape terminée au fur et à mesure de votre configuration.
+4. Supprimez une étape si elle n’est pas pertinente pour votre drone.
+5. Rechargez la page : la checklist reste sauvegardée via `localStorage` quand le stockage navigateur est disponible.

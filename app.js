@@ -1,4 +1,14 @@
 const STORAGE_KEY = "todo-items";
+const DEFAULT_TODOS = [
+  { id: "bf-ports", text: "Vérifier l’onglet Ports et activer l’UART du récepteur/VTX si nécessaire.", completed: false },
+  { id: "bf-setup", text: "Contrôler l’orientation du drone dans l’onglet Setup et corriger l’alignement de la FC.", completed: false },
+  { id: "bf-protocol", text: "Choisir le protocole ESC/moteur et vérifier la fréquence gyro adaptée dans Configuration.", completed: false },
+  { id: "bf-receiver", text: "Configurer le type de récepteur (ELRS, Crossfire, SBUS...) et vérifier le mapping des voies.", completed: false },
+  { id: "bf-motors", text: "Tester le sens des moteurs sans hélices et corriger si besoin dans BLHeli/Bluejay.", completed: false },
+  { id: "bf-modes", text: "Affecter les modes ARM, BEEPER et éventuellement ANGLE/HORIZON sur vos interrupteurs radio.", completed: false },
+  { id: "bf-failsafe", text: "Tester le failsafe radio pour confirmer la coupure des moteurs en cas de perte de signal.", completed: false },
+  { id: "bf-osd", text: "Régler l’OSD (RSSI/LQ, tension, minuterie) puis sauvegarder le profil.", completed: false },
+];
 
 const form = document.getElementById("todo-form");
 const input = document.getElementById("todo-input");
@@ -50,19 +60,20 @@ function loadTodos() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) {
-      return [];
+      return createDefaultTodos();
     }
 
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) {
-      return [];
+      return createDefaultTodos();
     }
 
-    return parsed.filter(
+    const filteredTodos = parsed.filter(
       (item) => typeof item?.id === "string" && typeof item?.text === "string" && typeof item?.completed === "boolean",
     );
+    return filteredTodos.length > 0 ? filteredTodos : createDefaultTodos();
   } catch {
-    return [];
+    return createDefaultTodos();
   }
 }
 
@@ -72,19 +83,19 @@ function persistAndRender(nextTodos) {
     todos = nextTodos;
     renderTodos();
   } catch {
-    status.textContent = "Unable to save changes in local storage.";
+    status.textContent = "Impossible d’enregistrer les changements dans le stockage local.";
   }
 }
 
 function renderTodos() {
   if (todos.length === 0) {
     list.innerHTML = "";
-    status.textContent = "No tasks in the list.";
+    status.textContent = "Aucune étape dans la checklist.";
     return;
   }
 
   list.innerHTML = "";
-  status.textContent = `${todos.length} task${todos.length === 1 ? "" : "s"} in the list.`;
+  status.textContent = `${todos.length} étape${todos.length === 1 ? "" : "s"} dans la checklist.`;
 
   for (const todo of todos) {
     const item = document.createElement("li");
@@ -96,7 +107,7 @@ function renderTodos() {
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = todo.completed;
-    checkbox.setAttribute("aria-label", `${todo.text} (${todo.completed ? "completed" : "not completed"})`);
+    checkbox.setAttribute("aria-label", `${todo.text} (${todo.completed ? "terminée" : "non terminée"})`);
     checkbox.dataset.action = "toggle";
     checkbox.dataset.id = todo.id;
 
@@ -111,7 +122,7 @@ function renderTodos() {
     deleteButton.className = "delete-btn";
     deleteButton.dataset.action = "delete";
     deleteButton.dataset.id = todo.id;
-    deleteButton.textContent = "Delete";
+    deleteButton.textContent = "Supprimer";
 
     item.append(label, deleteButton);
     list.appendChild(item);
@@ -130,4 +141,8 @@ function generateId() {
   }
 
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+function createDefaultTodos() {
+  return DEFAULT_TODOS.map((todo) => ({ ...todo }));
 }
