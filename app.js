@@ -1,5 +1,6 @@
 const STORAGE_KEY = "todo-items";
 const DEFAULT_TODOS = [
+  { id: "bf-connect", text: "Connecter le drone en USB avec un câble de données puis ouvrir Betaflight Configurator.", completed: false },
   { id: "bf-ports", text: "Vérifier l’onglet Ports et activer l’UART du récepteur/VTX si nécessaire.", completed: false },
   { id: "bf-setup", text: "Contrôler l’orientation du drone dans l’onglet Setup et corriger l’alignement de la FC.", completed: false },
   { id: "bf-protocol", text: "Choisir le protocole ESC/moteur et vérifier la fréquence gyro adaptée dans Configuration.", completed: false },
@@ -68,10 +69,9 @@ function loadTodos() {
       return createDefaultTodos();
     }
 
-    const filteredTodos = parsed.filter(
+    return parsed.filter(
       (item) => typeof item?.id === "string" && typeof item?.text === "string" && typeof item?.completed === "boolean",
     );
-    return filteredTodos.length > 0 ? filteredTodos : createDefaultTodos();
   } catch {
     return createDefaultTodos();
   }

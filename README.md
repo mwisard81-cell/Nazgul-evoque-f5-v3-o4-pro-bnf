@@ -32,7 +32,8 @@ Puis ouvrez `http://localhost:8000`.
 ## Utilisation
 
 1. Passez en revue les étapes de base déjà proposées pour Betaflight.
-2. Ajoutez une étape personnalisée si votre build nécessite un réglage supplémentaire.
-3. Cochez chaque étape terminée au fur et à mesure de votre configuration.
-4. Supprimez une étape si elle n’est pas pertinente pour votre drone.
-5. Rechargez la page : la checklist reste sauvegardée via `localStorage` quand le stockage navigateur est disponible.
+2. Commencez par connecter le drone en USB avec un câble de données compatible.
+3. Ajoutez une étape personnalisée si votre build nécessite un réglage supplémentaire.
+4. Cochez chaque étape terminée au fur et à mesure de votre configuration.
+5. Supprimez une étape si elle n’est pas pertinente pour votre drone.
+6. Rechargez la page : la checklist reste sauvegardée via `localStorage` quand le stockage navigateur est disponible.
