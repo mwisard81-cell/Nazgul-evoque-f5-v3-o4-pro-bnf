@@ -64,6 +64,10 @@ function loadTodos() {
       return createDefaultTodos();
     }
 
+    if (raw.trim() === "[]") {
+      return [];
+    }
+
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) {
       return createDefaultTodos();
@@ -72,7 +76,7 @@ function loadTodos() {
     const filteredTodos = parsed.filter(
       (item) => typeof item?.id === "string" && typeof item?.text === "string" && typeof item?.completed === "boolean",
     );
-    return parsed.length === 0 || filteredTodos.length > 0 ? filteredTodos : createDefaultTodos();
+    return filteredTodos.length > 0 ? filteredTodos : createDefaultTodos();
   } catch {
     return createDefaultTodos();
   }
