@@ -69,9 +69,10 @@ function loadTodos() {
       return createDefaultTodos();
     }
 
-    return parsed.filter(
+    const filteredTodos = parsed.filter(
       (item) => typeof item?.id === "string" && typeof item?.text === "string" && typeof item?.completed === "boolean",
     );
+    return parsed.length === 0 || filteredTodos.length > 0 ? filteredTodos : createDefaultTodos();
   } catch {
     return createDefaultTodos();
   }
