@@ -1,14 +1,14 @@
 const STORAGE_KEY = "todo-items";
-const DEFAULT_TODOS = [
-  { id: "bf-connect", text: "Connecter le drone en USB avec un câble de données puis ouvrir Betaflight Configurator.", completed: false },
-  { id: "bf-ports", text: "Vérifier l’onglet Ports et activer l’UART du récepteur/VTX si nécessaire.", completed: false },
-  { id: "bf-setup", text: "Contrôler l’orientation du drone dans l’onglet Setup et corriger l’alignement de la FC.", completed: false },
-  { id: "bf-protocol", text: "Choisir le protocole ESC/moteur et vérifier la fréquence gyro adaptée dans Configuration.", completed: false },
-  { id: "bf-receiver", text: "Configurer le type de récepteur (ELRS, Crossfire, SBUS...) et vérifier le mapping des voies.", completed: false },
-  { id: "bf-motors", text: "Tester le sens des moteurs sans hélices et corriger si besoin dans BLHeli/Bluejay.", completed: false },
-  { id: "bf-modes", text: "Affecter les modes ARM, BEEPER et éventuellement ANGLE/HORIZON sur vos interrupteurs radio.", completed: false },
-  { id: "bf-failsafe", text: "Tester le failsafe radio pour confirmer la coupure des moteurs en cas de perte de signal.", completed: false },
-  { id: "bf-osd", text: "Régler l’OSD (RSSI/LQ, tension, minuterie) puis sauvegarder le profil.", completed: false },
+const DEFAULT_TODO_TEXTS = [
+  "Connecter le drone en USB avec un câble de données puis ouvrir Betaflight Configurator.",
+  "Vérifier l’onglet Ports et activer l’UART du récepteur/VTX si nécessaire.",
+  "Contrôler l’orientation du drone dans l’onglet Setup et corriger l’alignement de la FC.",
+  "Choisir le protocole ESC/moteur et vérifier la fréquence gyro adaptée dans Configuration.",
+  "Configurer le type de récepteur (ELRS, Crossfire, SBUS...) et vérifier le mapping des voies.",
+  "Tester le sens des moteurs sans hélices et corriger si besoin dans BLHeli/Bluejay.",
+  "Affecter les modes ARM, BEEPER et éventuellement ANGLE/HORIZON sur vos interrupteurs radio.",
+  "Tester le failsafe radio pour confirmer la coupure des moteurs en cas de perte de signal.",
+  "Régler l’OSD (RSSI/LQ, tension, minuterie) puis sauvegarder le profil.",
 ];
 
 const form = document.getElementById("todo-form");
@@ -69,9 +69,10 @@ function loadTodos() {
       return createDefaultTodos();
     }
 
-    return parsed.filter(
+    const filteredTodos = parsed.filter(
       (item) => typeof item?.id === "string" && typeof item?.text === "string" && typeof item?.completed === "boolean",
     );
+    return parsed.length === 0 || filteredTodos.length > 0 ? filteredTodos : createDefaultTodos();
   } catch {
     return createDefaultTodos();
   }
@@ -144,5 +145,9 @@ function generateId() {
 }
 
 function createDefaultTodos() {
-  return DEFAULT_TODOS.map((todo) => ({ ...todo }));
+  return DEFAULT_TODO_TEXTS.map((text) => ({
+    id: generateId(),
+    text,
+    completed: false,
+  }));
 }
