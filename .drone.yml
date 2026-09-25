@@ -1,0 +1,19 @@
+kind: pipeline
+type: docker
+name: default
+
+trigger:
+  event:
+    - push
+    - pull_request
+
+steps:
+  - name: validate-static-app
+    image: node:22-alpine
+    commands:
+      - test -s index.html
+      - test -s styles.css
+      - test -s app.js
+      - grep -q '<link rel="stylesheet" href="styles.css"' index.html
+      - grep -q '<script src="app.js"></script>' index.html
+      - node --check app.js
