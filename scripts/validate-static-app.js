@@ -30,6 +30,13 @@ function findStartTags(source, tagName) {
   let index = 0;
 
   while ((index = lowerSource.indexOf(token, index)) !== -1) {
+    const nextCharacter = lowerSource[index + token.length];
+
+    if (!isTagBoundary(nextCharacter)) {
+      index += token.length;
+      continue;
+    }
+
     const end = lowerSource.indexOf(">", index + token.length);
 
     if (end === -1) {
@@ -128,7 +135,7 @@ function isExpectedRelativeAsset(value, expectedFileName) {
     return false;
   }
 
-  return normalizedValue === expectedFileName || normalizedValue.endsWith(`/${expectedFileName}`);
+  return segments[segments.length - 1] === expectedFileName;
 }
 
 function stripQueryAndHash(value) {
@@ -168,4 +175,8 @@ function skipWhitespace(value, index) {
 
 function isWhitespace(character) {
   return character === " " || character === "\n" || character === "\r" || character === "\t" || character === "\f";
+}
+
+function isTagBoundary(character) {
+  return character === undefined || character === ">" || character === "/" || isWhitespace(character);
 }
