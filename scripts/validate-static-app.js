@@ -122,6 +122,11 @@ function isExpectedRelativeAsset(value, expectedFileName) {
   }
 
   const normalizedValue = cleanValue.startsWith("./") ? cleanValue.slice(2) : cleanValue;
+  const segments = normalizedValue.split("/");
+
+  if (segments.includes("..")) {
+    return false;
+  }
 
   return normalizedValue === expectedFileName || normalizedValue.endsWith(`/${expectedFileName}`);
 }
