@@ -21,6 +21,13 @@ test("rejects unexpected, absolute, parent, or nested asset paths", () => {
 test("accepts quoted and unquoted root asset references in HTML", () => {
   assert.doesNotThrow(() =>
     validateHtmlReferences(`
+      <link rel="stylesheet" href="styles.css?v=1">
+      <script defer src='app.js?x=>1'></script >
+    `),
+  );
+
+  assert.doesNotThrow(() =>
+    validateHtmlReferences(`
       <link rel=stylesheet href=styles.css>
       <script defer src="./app.js?v=2"></script >
     `),

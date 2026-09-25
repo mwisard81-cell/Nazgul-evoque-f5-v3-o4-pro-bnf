@@ -42,7 +42,7 @@ function findStartTags(source, tagName) {
       continue;
     }
 
-    const end = lowerSource.indexOf(">", index + token.length);
+    const end = findTagEnd(source, index + token.length);
 
     if (end === -1) {
       break;
@@ -53,6 +53,32 @@ function findStartTags(source, tagName) {
   }
 
   return matches;
+}
+
+function findTagEnd(source, index) {
+  let quote = null;
+
+  for (let cursor = index; cursor < source.length; cursor += 1) {
+    const character = source[cursor];
+
+    if (quote) {
+      if (character === quote) {
+        quote = null;
+      }
+      continue;
+    }
+
+    if (character === '"' || character === "'") {
+      quote = character;
+      continue;
+    }
+
+    if (character === ">") {
+      return cursor;
+    }
+  }
+
+  return -1;
 }
 
 function hasAssetReference(tags, attributeName, expectedFileName) {
@@ -185,6 +211,7 @@ function isTagBoundary(character) {
 }
 
 module.exports = {
+  findTagEnd,
   findStartTags,
   hasAssetReference,
   isExpectedRelativeAsset,
