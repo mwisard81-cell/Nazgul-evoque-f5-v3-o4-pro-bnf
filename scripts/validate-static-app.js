@@ -2,25 +2,30 @@ const fs = require("node:fs");
 
 const requiredFiles = ["index.html", "styles.css", "app.js"];
 
-for (const file of requiredFiles) {
-  const stats = fs.statSync(file, { throwIfNoEntry: false });
+function validateStaticApp() {
+  for (const file of requiredFiles) {
+    const stats = fs.statSync(file, { throwIfNoEntry: false });
 
-  if (!stats?.isFile() || stats.size === 0) {
-    throw new Error(`Missing or empty file: ${file}`);
+    if (!stats?.isFile() || stats.size === 0) {
+      throw new Error(`Missing or empty file: ${file}`);
+    }
   }
+
+  const html = fs.readFileSync("index.html", "utf8");
+  validateHtmlReferences(html);
 }
 
-const html = fs.readFileSync("index.html", "utf8");
+function validateHtmlReferences(html) {
+  const linkTags = findStartTags(html, "link");
+  const scriptTags = findStartTags(html, "script");
 
-const linkTags = findStartTags(html, "link");
-const scriptTags = findStartTags(html, "script");
+  if (!hasAssetReference(linkTags, "href", "styles.css")) {
+    throw new Error("Missing styles.css link");
+  }
 
-if (!hasAssetReference(linkTags, "href", "styles.css")) {
-  throw new Error("Missing styles.css link");
-}
-
-if (!hasAssetReference(scriptTags, "src", "app.js")) {
-  throw new Error("Missing app.js script");
+  if (!hasAssetReference(scriptTags, "src", "app.js")) {
+    throw new Error("Missing app.js script");
+  }
 }
 
 function findStartTags(source, tagName) {
@@ -129,13 +134,11 @@ function isExpectedRelativeAsset(value, expectedFileName) {
   }
 
   const normalizedValue = cleanValue.startsWith("./") ? cleanValue.slice(2) : cleanValue;
-  const segments = normalizedValue.split("/");
-
-  if (segments.includes("..")) {
+  if (normalizedValue.includes("/")) {
     return false;
   }
 
-  return segments[segments.length - 1] === expectedFileName;
+  return normalizedValue === expectedFileName;
 }
 
 function stripQueryAndHash(value) {
@@ -179,4 +182,18 @@ function isWhitespace(character) {
 
 function isTagBoundary(character) {
   return character === undefined || character === ">" || character === "/" || isWhitespace(character);
+}
+
+module.exports = {
+  findStartTags,
+  hasAssetReference,
+  isExpectedRelativeAsset,
+  parseAttributes,
+  stripQueryAndHash,
+  validateHtmlReferences,
+  validateStaticApp,
+};
+
+if (require.main === module) {
+  validateStaticApp();
 }

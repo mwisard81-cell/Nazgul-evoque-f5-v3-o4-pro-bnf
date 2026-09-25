@@ -12,4 +12,5 @@ steps:
     image: node:22-alpine
     commands:
       - node --check app.js
+      - node --test scripts/validate-static-app.test.js
       - node scripts/validate-static-app.js

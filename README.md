@@ -32,7 +32,7 @@ Then open `http://localhost:8000`.
 
 This repository includes a minimal Drone pipeline in `.drone.yml` at the repository root.
 
-The pipeline validates that the static application files are present, that `index.html` references `styles.css` and `app.js`, and that `app.js` passes a JavaScript syntax check with Node.js. The HTML/file checks are implemented in `scripts/validate-static-app.js`.
+The pipeline validates that the static application files are present, that `index.html` references the root `styles.css` and `app.js` assets (with optional `./` prefixes or cache suffixes), and that `app.js` passes a JavaScript syntax check with Node.js. The HTML/file checks are implemented in `scripts/validate-static-app.js` and covered by `scripts/validate-static-app.test.js`.
 
 ## Usage
 
