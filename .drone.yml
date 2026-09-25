@@ -14,6 +14,5 @@ steps:
       - test -s index.html
       - test -s styles.css
       - test -s app.js
-      - grep -q '<link rel="stylesheet" href="styles.css"' index.html
-      - grep -q '<script src="app.js"></script>' index.html
       - node --check app.js
+      - node -e "const fs=require('node:fs'); const html=fs.readFileSync('index.html','utf8'); if (!/<link\\b[^>]*href=[\"']styles\\.css[\"'][^>]*>/i.test(html)) { throw new Error('Missing styles.css link'); } if (!/<script\\b[^>]*src=[\"']app\\.js[\"'][^>]*><\\/script>/i.test(html)) { throw new Error('Missing app.js script'); }"
