@@ -1,0 +1,16 @@
+kind: pipeline
+type: docker
+name: default
+
+trigger:
+  event:
+    - push
+    - pull_request
+
+steps:
+  - name: validate-static-app
+    image: node:22-alpine
+    commands:
+      - node --check app.js
+      - node --test scripts/validate-static-app.test.js
+      - node scripts/validate-static-app.js
