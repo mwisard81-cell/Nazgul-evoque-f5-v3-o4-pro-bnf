@@ -15,4 +15,4 @@ steps:
       - test -s styles.css
       - test -s app.js
       - node --check app.js
-      - node -e "const fs=require('node:fs'); const html=fs.readFileSync('index.html','utf8'); if (!/<link\\b[^>]*href=[\"'](?:\\.\\/)?styles\\.css(?:[?#][^\"']*)?[\"'][^>]*>/i.test(html)) { throw new Error('Missing styles.css link'); } if (!/<script\\b[^>]*src=[\"'](?:\\.\\/)?app\\.js(?:[?#][^\"']*)?[\"'][^>]*><\\/script>/i.test(html)) { throw new Error('Missing app.js script'); }"
+      - node -e "const fs=require('node:fs'); const html=fs.readFileSync('index.html','utf8'); if (!/<link\\b[^>]*href=[\"'](?:\\.\\/)?(?:[^\"'?#]+\\/)*styles\\.css(?:[?#][^\"']*)?[\"'][^>]*>/i.test(html)) { throw new Error('Missing styles.css link'); } if (!/<script\\b[^>]*src=[\"'](?:\\.\\/)?(?:[^\"'?#]+\\/)*app\\.js(?:[?#][^\"']*)?[\"'][^>]*><\\/script>/i.test(html)) { throw new Error('Missing app.js script'); }"
